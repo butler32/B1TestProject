@@ -1,0 +1,32 @@
+﻿<Window x:Class="B1TestProject.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:B1TestProject" xmlns:viewmodels="clr-namespace:B1TestProject.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:NavigationVM}"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="800" Width="1200">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" BorderThickness="0" Content="Text task" Command="{Binding TextFileCommand}" FontSize="30" />
+
+            <Button Grid.Column="1" BorderThickness="0" Content="Exel task" Command="{Binding ExcelFileCommand}" FontSize="30" />
+
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <ContentControl x:Name="Pages" Content="{Binding CurrentView}"/>
+        </Grid>
+    </Grid>
+</Window>

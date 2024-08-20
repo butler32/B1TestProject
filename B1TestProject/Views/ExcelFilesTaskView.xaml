@@ -1,0 +1,140 @@
+﻿<UserControl x:Class="B1TestProject.Views.ExcelFilesTaskView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:util="clr-namespace:B1TestProject.Utilities"
+             xmlns:local="clr-namespace:B1TestProject.Views" xmlns:viewmodels="clr-namespace:B1TestProject.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:ExcelFilesTaskVM}"
+             mc:Ignorable="d" 
+             AllowDrop="True"
+             Drop="Window_Drop"
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    <UserControl.Resources>
+        <util:NullOrEmptyToEnableConverter x:Key="NullOrEmptyToEnable"/>
+        <util:NullOrEmptyToVisibilityConverter x:Key="NullOrEmptyToVis"/>
+
+        <Style x:Key="BoldTextStyle" TargetType="DataGridCell">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsBold}" Value="True">
+                    <Setter Property="FontWeight" Value="Bold"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        
+    </UserControl.Resources>
+    
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Grid Grid.Column="0">
+
+                <Button Command="{Binding DialogCommand}" FontSize="30">
+                    <TextBlock Text="Select" TextWrapping="Wrap"/>
+                </Button>
+
+            </Grid>
+
+            <Grid Grid.Column="1">
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                    <TextBlock Text="Select or drag and drop excel file" Visibility="{Binding FilePath, Converter={StaticResource NullOrEmptyToVis}}" FontSize="30"/>
+                    <TextBlock Text="{Binding FilePath}" FontSize="30"/>
+
+                </StackPanel>
+
+            </Grid>
+
+            <Grid Grid.Column="2">
+
+                <Button Command="{Binding ImportCommand}" FontSize="30" IsEnabled="{Binding FilePath, Converter={StaticResource NullOrEmptyToEnable}}">
+                    <TextBlock Text="Import" TextWrapping="Wrap"/>
+                </Button>
+
+            </Grid>
+
+        </Grid>
+
+        <Grid Grid.Row="0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="8*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="8*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+
+                    <ListBox ItemsSource="{Binding ExcelFilesList}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedTable, Mode=TwoWay}"/>
+
+                </Grid>
+
+                <Grid Grid.Row="1">
+
+                    <Button Command="{Binding DeleteCommand}">
+                        <TextBlock Text="Delete all" TextWrapping="Wrap" FontSize="20"/>
+                    </Button>
+
+                </Grid>
+
+            </Grid>
+
+            <Grid Grid.Column="1">
+
+                <DataGrid ItemsSource="{Binding BalanceSheet}" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserAddRows="False">
+                    
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Account Number" Binding="{Binding AccountNumber}" 
+                        CellStyle="{StaticResource BoldTextStyle}"/>
+
+                        <DataGridTextColumn Header="Incoming Balance Active" Binding="{Binding IncomingBalanceActive, StringFormat=N2}"
+                        CellStyle="{StaticResource BoldTextStyle}" />
+                        <DataGridTextColumn Header="Incoming Balance Passive" Binding="{Binding IncomingBalancePassive, StringFormat=N2}"
+                        CellStyle="{StaticResource BoldTextStyle}" />
+                        <DataGridTextColumn Header="Turnover Debit" Binding="{Binding TurnoverDebit, StringFormat=N2}"
+                        CellStyle="{StaticResource BoldTextStyle}" />
+                        <DataGridTextColumn Header="Turnover Credit" Binding="{Binding TurnoverCredit, StringFormat=N2}"
+                        CellStyle="{StaticResource BoldTextStyle}" />
+                        <DataGridTextColumn Header="Outgoing Balance Active" Binding="{Binding OutgoingBalanceActive, StringFormat=N2}"
+                        CellStyle="{StaticResource BoldTextStyle}" />
+                        <DataGridTextColumn Header="Outgoing Balance Passive" Binding="{Binding OutgoingBalancePassive, StringFormat=N2}"
+                        CellStyle="{StaticResource BoldTextStyle}" />
+                    </DataGrid.Columns>
+
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsClassHeader}" Value="True">
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Background" Value="LightGray"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+                </DataGrid>
+
+            </Grid>
+
+        </Grid>
+        
+    </Grid>
+</UserControl>
