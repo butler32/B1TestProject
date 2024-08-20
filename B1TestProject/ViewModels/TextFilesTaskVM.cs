@@ -134,7 +134,6 @@ namespace B1TestProject.ViewModels
         {
             MessageBox.Show("It's gonna take about 1 minute");
 
-            await _textFilesService.DeleteAllFilesAsync(_tokenService.GetToken());
             IsFilesGenerated = await _textFilesService.GenerateTextFiles(_tokenService.GetToken());
 
             IsFilesMerged = _textFilesService.IsMergedFileExist();

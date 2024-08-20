@@ -52,9 +52,18 @@ namespace B1TestProject.Infrastructure.Repositories
 
         public async Task DeleteAllAsync(CancellationToken cancellationToken)
         {
-            var entities = await _context.Set<T>().AsNoTracking().ToListAsync(cancellationToken);
-            _context.RemoveRange(entities);
-            await _context.SaveChangesAsync(cancellationToken);
+            const int batchSize = 1000;
+
+            while (true)
+            {
+                var entities = await _context.Set<T>().AsNoTracking().Take(batchSize).ToListAsync(cancellationToken);
+
+                if (entities.Count == 0)
+                    break;
+
+                _context.RemoveRange(entities);
+                await _context.SaveChangesAsync(cancellationToken);
+            }
         }
     }
 }
